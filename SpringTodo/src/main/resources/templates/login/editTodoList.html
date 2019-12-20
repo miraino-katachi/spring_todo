@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"></link>
+<script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+<title>作業更新</title>
+</head>
+<body>
+<div th:fragment="editTodoList_contents">
+<div class="col-sm-5">
+	<div class="page-header">
+		<h1>作業更新</h1>
+	</div>
+	<form method="post" th:action="@{/edit}" th:object="${todoItemForm}">
+		<table class="table table-bordered table-hover">
+		<!-- 項目名の入力エリア -->
+		<tr>
+			<th class="active col-sm-3">項目名</th>
+			<td>
+				<!-- classappend エラー用CSSの追加 -->
+				<div class="form-group" th:classappend="${#fields.hasErrors('itemName')}?'has-error'">
+				<input type="hidden" class="form-control" th:field="*{id}"/>
+					<input type="text" class="form-control" th:field="*{itemName}"/>
+					<!-- 個別エラーメッセージの表示 -->
+					<span class="text-danger" th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}">itemName error</span>
+				</div>
+			</td>
+		</tr>
+		<!-- 担当者の入力エリア -->
+		<tr>
+			<th class="active">担当者</th>
+			<td>
+				<div class="form-group" th:classappend="${#fields.hasErrors('userId')}?'has-error'">
+					<select th:field="*{selectUser}">
+						<option th:each="user : ${userList}" th:value="${user.userId}" th:text="${user.user}"></option>
+					</select>
+					<!-- 個別エラーメッセージの表示 -->
+					<span class="text-danger" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId error</span>
+				</div>
+			</td>
+		</tr>
+		<!-- 期限の入力エリア -->
+		<tr>
+			<th class="active">期限</th>
+			<td>
+				<div class="form-group" th:classappend="${#fields.hasErrors('expireDate')}?'has-error'">
+					<input type="text" class="form-control" th:field="*{expireDate}" placeholder="2020/01/01"/>
+					<!-- 個別エラーメッセージの表示 -->
+					<span class="text-danger" th:if="${#fields.hasErrors('expireDate')}" th:errors="*{expireDate}">expireDate error</span>
+				</div>
+			</td>
+		</tr>
+		<!-- 終了のチェックボックス -->
+		<tr>
+			<th class="active">終了</th>
+			<td>
+				<input type="checkbox" name="finishedCheck" value="checked" th:checked="${todoItemForm.finishedCheck}" th:field="*{finishedCheck}"/>終了した
+			</td>
+		</tr>
+		<!-- 作業更新ボタン -->
+		</table>
+		<button class="btn btn-primary" type="submit">更新</button>
+		<!-- 戻るボタン type=buttonを指定しないと、submitにデフォルト設定される-->
+		<button type="button" class="btn btn-default pull-right" onclick="history.back();">キャンセル</button>
+	</form>
+
+</div>
+</div>
+</body>
+</html>

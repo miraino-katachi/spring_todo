@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="deleteTodoList_contents">
+	<div class="page-header">
+		<h1>削除確認</h1>
+	</div>
+	<p class="text-center" th:text="'項目「' + ${todoItemList.itemName} + '」を削除します。よろしいですか？'"></p><br/>
+	<form method="post" th:action="@{/delete}" th:object="${todoItemList}">
+		<input type="hidden" class="form-control" th:field="*{id}"/>
+		<div class="text-center"><button class="btn btn-primary" type="submit">削除</button>
+		<button type="button" class="btn btn-default" onclick="history.back();">戻る</button>
+		</div>
+	</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="searchTodoList_contents">
+	<div class="page-header">
+		<h1>検索結果</h1>
+	</div>
+
+    <table class="table" style="border-top:hidden;">
+    	<tr>
+    		<td colspan="2">
+	    		<!-- 登録ボタン -->
+	    		<a class="btn btn-primary" th:href="@{'/add'}">作業登録</a>
+    		</td>
+    		<td colspan="3" class="text-right">
+    		<!-- 検索フォーム -->
+				<form class="navbar-form" method="post" th:action="@{/find}" >
+   					 <div class="form-group">
+        				<input type="text" class="form-control" name="str" placeholder="キーワード">
+   					 </div>
+   					<button type="submit" class="btn btn-default	">検索</button>
+				</form>
+    		</td>
+    	</tr>
+    </table>
+
+		<table class="table table-borderd table-hover table-striped"	>
+			<tr>
+				<th class="info col-sm-2">項目名</th>
+				<th class="info col-sm-2">担当者</th>
+				<th class="info col-sm-2">期限</th>
+				<th class="info col-sm-2">完了</th>
+				<th class="info col-sm-2" colspan="3">操作</th>
+			</tr>
+			<tr th:each="todoItem:${todoList}" th:if="${todoItem.isDelete == 0}"
+				th:classappend="|${((todoItem.finishedDate == null && todoItem.expireDate < #dates.createNow()) ? 'danger' : '')}
+				${((todoItem.finishedDate == null && todoItem.expireDate < #dates.createNow()) && loginUser.userId == todoItem.userId ? 'danger text-danger' : '')}|">
+				<td th:text="${todoItem.itemName}"></td>
+				<td th:text="${todoItem.userName}"></td>
+				<td th:text="${#dates.format(todoItem.expireDate, 'YYYY/MM/dd')}"></td>
+				<td th:text="${#dates.format(todoItem.finishedDate, 'YYYY/MM/dd')}" th:if="${todoItem.finishedDate != null}" ></td>
+				<td th:text="未" th:if="${todoItem.finishedDate == null}"></td>
+				<td th:if="${todoItem.finishedDate == null}"><a class="btn btn-primary" th:href="@{'/complete/' + ${todoItem.id}}">完了</a></td>
+				<td th:if="${todoItem.finishedDate != null}"><a class="btn btn-primary" th:href="@{'/incomplete/' + ${todoItem.id}}">未完了</a></td>
+				<td><a class="btn btn-primary" th:href="@{'/editTodoList/' + ${todoItem.id}}">更新</a></td>
+				<td><a class="btn btn-primary" th:href="@{'/deleteTodoList/' + ${todoItem.id}}">削除</a></td>
+			</tr>
+		</table>
+		<div class="text-right">
+			<form method="post" action="/topPage">
+				<button class="btn btn-default text-right" type="submit">戻る</button>
+			</form>
+		</div>
+
+</div>
+</body>
+</html>
