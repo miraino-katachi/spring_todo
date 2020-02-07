@@ -65,5 +65,4 @@ public class UsersDaoJdbcImpl implements UsersDao{
 		user.setUser((String)map.get("user"));//ユーザ名
 		return user;
 	}
-
 }

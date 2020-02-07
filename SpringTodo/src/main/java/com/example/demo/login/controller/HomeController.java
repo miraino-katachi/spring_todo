@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.login.domain.model.GroupOrder;
@@ -166,8 +167,8 @@ public class HomeController {
 	}
 
 	//作業更新用処理
-	@PostMapping(value="/edit")
-	public String userDetailUpdate(@ModelAttribute @Validated(GroupOrder.class)TodoItemForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+	@PostMapping("/edit")
+	public String userDetailUpdate(@ModelAttribute @Validated(GroupOrder.class)TodoItemForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes, @RequestParam(name = "finishedCheck", required = false)String finishedCheck) {
 		System.out.println("更新ボタンの処理");
 
 		//入力チェックに引っかかった場合、作業登録画面に戻る
@@ -186,7 +187,7 @@ public class HomeController {
 		todoItem.setItemName(form.getItemName());
 		todoItem.setExpireDate(form.getExpireDate());
 
-		if(form.getFinishedCheck()) {
+		if(finishedCheck != null) {
 			todoItem.setFinishedDate(d);
 		}else {
 			todoItem.setFinishedDate(null);

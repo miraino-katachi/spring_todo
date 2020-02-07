@@ -56,7 +56,7 @@
 		<tr>
 			<th class="active">終了</th>
 			<td>
-				<input type="checkbox" name="finishedCheck" value="checked" th:checked="${todoItemForm.finishedCheck}" th:field="*{finishedCheck}"/>終了した
+				<input type="checkbox" name="finishedCheck" th:value="checked" th:field="${todoItemForm.finishedCheck}" />終了した
 			</td>
 		</tr>
 		<!-- 作業更新ボタン -->
